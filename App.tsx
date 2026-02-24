@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Building2, 
-  Users, 
   User,
   FileText, 
   CheckSquare, 
@@ -15,7 +14,6 @@ import { FileUploadField } from './components/FileUploadField';
 import { 
   DealFormData, 
   PropertyType, 
-  DecisionMakerRole, 
   FileCategory, 
   UploadedFile 
 } from './types';
@@ -28,12 +26,6 @@ const INITIAL_DATA: DealFormData = {
   submitterName: '',
   submitterPhone: '',
   submitterEmail: '',
-  hasDirectAccess: null,
-  decisionMakerName: '',
-  decisionMakerRole: '',
-  decisionMakerPhone: '',
-  decisionMakerEmail: '',
-  confirmIntroduction: false,
   finalAcknowledgement: false,
 };
 
@@ -92,13 +84,6 @@ export default function App() {
     if (!formData.submitterName) errors.push("Your Name is required");
     if (!formData.submitterPhone) errors.push("Your Phone is required");
     if (!formData.submitterEmail) errors.push("Your Email is required");
-
-    // Decision Maker (optional, but if hasDirectAccess is true, some fields are required)
-    if (formData.hasDirectAccess === true) {
-      if (!formData.decisionMakerName) errors.push("Decision Maker Name is required");
-      if (!formData.decisionMakerRole) errors.push("Decision Maker Role is required");
-      if (!formData.confirmIntroduction) errors.push("Introduction confirmation is required");
-    }
 
     // Files
     const uploadedCategories = new Set(files.map(f => f.category));
@@ -187,7 +172,6 @@ export default function App() {
             <ul className="list-disc pl-4 space-y-1">
               <li>Property: {formData.propertyName}</li>
               <li>Submitted by: {formData.submitterName} ({formData.submitterEmail})</li>
-              {formData.decisionMakerName && <li>Decision Maker: {formData.decisionMakerName} ({formData.decisionMakerRole})</li>}
               <li>Files: {files.length} documents uploaded</li>
             </ul>
           </div>
@@ -308,110 +292,6 @@ export default function App() {
                   placeholder="you@example.com"
                 />
               </div>
-            </div>
-          </div>
-
-          {/* Section 2: Decision Maker Access */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
-             <div className="bg-brand-50 px-6 py-4 border-b border-brand-100 flex items-center gap-3">
-              <Users className="text-brand-500 w-5 h-5" />
-              <h2 className="text-lg font-semibold text-brand-900">Decision Maker Access</h2>
-            </div>
-            
-            <div className="p-6 space-y-6">
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <label className="block text-base font-medium text-gray-900 mb-3">
-                  Do you have direct access to the decision maker for this property?
-                </label>
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="hasDirectAccess"
-                      className="w-4 h-4 text-brand-500 border-gray-300 focus:ring-brand-500"
-                      checked={formData.hasDirectAccess === true}
-                      onChange={() => handleInputChange('hasDirectAccess', true)}
-                    />
-                    <span className="text-gray-700 font-medium">Yes, I do</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="hasDirectAccess"
-                      className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
-                      checked={formData.hasDirectAccess === false}
-                      onChange={() => handleInputChange('hasDirectAccess', false)}
-                    />
-                    <span className="text-gray-700 font-medium">No, I do not</span>
-                  </label>
-                </div>
-              </div>
-
-              {formData.hasDirectAccess === true && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-300">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Decision Maker Name</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.decisionMakerName}
-                        onChange={(e) => handleInputChange('decisionMakerName', e.target.value)}
-                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 border p-2 bg-white text-gray-900"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                      <select
-                        required
-                        value={formData.decisionMakerRole}
-                        onChange={(e) => handleInputChange('decisionMakerRole', e.target.value)}
-                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 border p-2 bg-white text-gray-900"
-                      >
-                        <option value="" className="text-gray-500">Select Role...</option>
-                        {Object.values(DecisionMakerRole).map(role => (
-                          <option key={role} value={role} className="text-gray-900">{role}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                      <input
-                        type="tel"
-                        value={formData.decisionMakerPhone}
-                        onChange={(e) => handleInputChange('decisionMakerPhone', e.target.value)}
-                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 border p-2 bg-white text-gray-900"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                      <input
-                        type="email"
-                        value={formData.decisionMakerEmail}
-                        onChange={(e) => handleInputChange('decisionMakerEmail', e.target.value)}
-                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 border p-2 bg-white text-gray-900"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                     <label className="flex items-start gap-3 cursor-pointer">
-                      <div className="flex items-center h-5">
-                        <input
-                          type="checkbox"
-                          required
-                          checked={formData.confirmIntroduction}
-                          onChange={(e) => handleInputChange('confirmIntroduction', e.target.checked)}
-                          className="h-4 w-4 text-brand-500 border-gray-300 rounded focus:ring-brand-500"
-                        />
-                      </div>
-                      <span className="text-sm text-gray-800 font-medium">
-                        I confirm I can make a direct introduction to the decision maker if the deal progresses.
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

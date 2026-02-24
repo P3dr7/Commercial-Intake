@@ -104,16 +104,6 @@ function validateFormData(body) {
     }
   }
   
-  // If hasDirectAccess is true, validate decision maker fields
-  if (body.hasDirectAccess === 'true' || body.hasDirectAccess === true) {
-    if (!body.decisionMakerName || typeof body.decisionMakerName !== 'string') {
-      errors.push('Decision Maker Name is required when you have direct access');
-    }
-    if (!body.decisionMakerRole || typeof body.decisionMakerRole !== 'string') {
-      errors.push('Decision Maker Role is required when you have direct access');
-    }
-  }
-  
   // Final acknowledgement
   if (body.finalAcknowledgement !== 'true' && body.finalAcknowledgement !== true) {
     errors.push('Final acknowledgement is required');
