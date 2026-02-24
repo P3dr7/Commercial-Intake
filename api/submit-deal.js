@@ -1,5 +1,3 @@
-import crypto from 'crypto';
-
 // Environment variables (set in Vercel dashboard - NEVER expose in frontend)
 const WEBHOOK_URL = process.env.WEBHOOK_URL;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -142,7 +140,7 @@ function validateFormData(body) {
 // Upload file to Supabase Storage
 async function uploadToSupabase(fileBuffer, filename, mimetype, category) {
   const timestamp = Date.now();
-  const randomId = crypto.randomBytes(8).toString('hex');
+  const randomId = Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join('');
   const sanitizedName = filename.replace(/[^a-zA-Z0-9.-]/g, '_').substring(0, 100);
   const filePath = `uploads/${timestamp}-${randomId}-${sanitizedName}`;
 
