@@ -26,6 +26,9 @@ export interface DealFormData {
   submitterPhone: string;
   submitterEmail: string;
 
+  // Section 2: Decision Maker Access
+  hasDirectAccess: boolean | null; // null = unanswered
+
   // Section 3 (Files are stored in a separate state array, but logically part of the form)
 
   // Section 4

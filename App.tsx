@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Building2, 
+  Users,
   User,
   FileText, 
   CheckSquare, 
@@ -26,6 +27,7 @@ const INITIAL_DATA: DealFormData = {
   submitterName: '',
   submitterPhone: '',
   submitterEmail: '',
+  hasDirectAccess: null,
   finalAcknowledgement: false,
 };
 
@@ -291,6 +293,44 @@ export default function App() {
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 border p-2 bg-white text-gray-900"
                   placeholder="you@example.com"
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Decision Maker Access */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-brand-50 px-6 py-4 border-b border-brand-100 flex items-center gap-3">
+              <Users className="text-brand-500 w-5 h-5" />
+              <h2 className="text-lg font-semibold text-brand-900">Decision Maker Access</h2>
+            </div>
+            
+            <div className="p-6">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label className="block text-base font-medium text-gray-900 mb-3">
+                  Do you have direct access to the decision maker for this property?
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="hasDirectAccess"
+                      className="w-4 h-4 text-brand-500 border-gray-300 focus:ring-brand-500"
+                      checked={formData.hasDirectAccess === true}
+                      onChange={() => handleInputChange('hasDirectAccess', true)}
+                    />
+                    <span className="text-gray-700 font-medium">Yes, I do</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="hasDirectAccess"
+                      className="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
+                      checked={formData.hasDirectAccess === false}
+                      onChange={() => handleInputChange('hasDirectAccess', false)}
+                    />
+                    <span className="text-gray-700 font-medium">No, I do not</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
