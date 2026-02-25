@@ -4,8 +4,16 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/:path*",
+      "source": "/bring-me-deals/api/:path*",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/bring-me-deals/:path*",
+      "destination": "/:path*"
+    },
+    {
+      "source": "/bring-me-deals",
+      "destination": "/"
     }
   ],
   "headers": [
