@@ -9,7 +9,9 @@ import {
   Send,
   ShieldCheck,
   CheckCircle,
-  Loader2
+  Loader2,
+  Menu,
+  X
 } from 'lucide-react';
 import { FileUploadField } from './components/FileUploadField';
 import { 
@@ -18,6 +20,122 @@ import {
   FileCategory, 
   UploadedFile 
 } from './types';
+
+// Header Component - Bella Terra Partners style
+function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-[#f5f5f5]/95 backdrop-blur-md shadow-sm border-b border-gray-200/60' 
+        : 'bg-[#f5f5f5]/90 backdrop-blur-sm border-b border-gray-200/40'
+    }`}>
+      <div className="w-full px-6 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <a href="https://bellaterrapartners.com" className="flex items-center group">
+            <div className="font-serif text-xl sm:text-2xl tracking-widest uppercase">
+              <span className="font-bold text-gray-800">BELLA TERRA</span>
+              <span className="font-normal ml-2" style={{ color: 'oklch(55% 0.25 330)' }}>PARTNERS</span>
+            </div>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-10">
+            <a 
+              href="https://bellaterrapartners.com/#about" 
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            >
+              About
+            </a>
+            <a 
+              href="https://bellaterrapartners.com/#portfolio" 
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            >
+              Portfolio
+            </a>
+            <a 
+              href="https://bellaterrapartners.com/#approach" 
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
+            >
+              Approach
+            </a>
+            <a 
+              href="https://rheacampbell.com/bring-me-deals/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="ml-2"
+            >
+              <button className="bg-[#2a9d8f] hover:bg-[#238b7e] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-colors duration-200">
+                Get in Touch
+              </button>
+            </a>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-200 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 bg-[#f5f5f5]/95 backdrop-blur-md">
+            <div className="py-4 space-y-3">
+              <a 
+                href="https://bellaterrapartners.com/#about" 
+                className="block px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+              <a 
+                href="https://bellaterrapartners.com/#portfolio" 
+                className="block px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Portfolio
+              </a>
+              <a 
+                href="https://bellaterrapartners.com/#approach" 
+                className="block px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Approach
+              </a>
+              <div className="px-4 pt-2">
+                <a 
+                  href="https://rheacampbell.com/bring-me-deals/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <button className="w-full bg-[#2a9d8f] hover:bg-[#238b7e] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-colors duration-200">
+                    Get in Touch
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}
 
 const INITIAL_DATA: DealFormData = {
   propertyName: '',
@@ -160,31 +278,36 @@ export default function App() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border-t-4 border-green-500">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center p-4 pt-24 bg-gray-50">
+          <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border-t-4 border-green-500">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Submission Received</h2>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Thanks for submitting this deal. Our team will review the financials and follow up if it meets initial criteria.
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4 text-left text-sm text-gray-500 mb-6">
+              <p className="font-medium mb-2">Submission Summary:</p>
+              <ul className="list-disc pl-4 space-y-1">
+                <li>Property: {formData.propertyName}</li>
+                <li>Submitted by: {formData.submitterName} ({formData.submitterEmail})</li>
+                <li>Files: {files.length} documents uploaded</li>
+              </ul>
+            </div>
+            <p className="text-xs text-gray-400">A confirmation email has been sent to you.</p>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Submission Received</h2>
-          <p className="text-gray-600 mb-6 leading-relaxed">
-            Thanks for submitting this deal. Our team will review the financials and follow up if it meets initial criteria.
-          </p>
-          <div className="bg-gray-50 rounded-lg p-4 text-left text-sm text-gray-500 mb-6">
-            <p className="font-medium mb-2">Submission Summary:</p>
-            <ul className="list-disc pl-4 space-y-1">
-              <li>Property: {formData.propertyName}</li>
-              <li>Submitted by: {formData.submitterName} ({formData.submitterEmail})</li>
-              <li>Files: {files.length} documents uploaded</li>
-            </ul>
-          </div>
-          <p className="text-xs text-gray-400">A confirmation email has been sent to you.</p>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         
         {/* Header */}
@@ -465,5 +588,6 @@ export default function App() {
         </form>
       </div>
     </div>
+    </>
   );
 }
