@@ -169,6 +169,17 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Redirect to home after successful submission
+  useEffect(() => {
+    if (isSubmitted) {
+      const timer = setTimeout(() => {
+        window.location.href = 'https://bellaterrapartners.com/';
+      }, 4000); // 4 second delay
+
+      return () => clearTimeout(timer);
+    }
+  }, [isSubmitted]);
+
   // --- Handlers ---
 
   const handleInputChange = (field: keyof DealFormData, value: any) => {
